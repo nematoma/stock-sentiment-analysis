@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 import joblib
-
+#need to download this only one time so remove this code after you run this once :) else it will keep downloading every time you run main.py
 nltk.download("punkt")
 nltk.download("stopwords")
 nltk.download("wordnet")
