@@ -81,7 +81,7 @@ train_data.extend([
     ("Partnership announced, but market reaction muted.", "neg"),
     ("Lawsuit filed even as profits rise.", "neg"),
 ])
-
+#data can be extended accordingly to help identify more ambigious data properly and more accurately 
 X_train_raw, y_train = zip(*train_data)
 X_train = [preprocess(x) for x in X_train_raw]
 
