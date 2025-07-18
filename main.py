@@ -3,7 +3,7 @@ import joblib
 from dotenv import load_dotenv
 from fetch_data import fetch_twitter_data, fetch_reddit_data, fetch_news_data
 from fetch_charts import get_technical_indicators, calculate_technical_score
-from sentiment_model import preprocess  # Add this import
+from sentiment_model import preprocess  
 
 load_dotenv()
 pipeline = joblib.load("fear_greed_model.joblib")
@@ -12,7 +12,7 @@ def analyze_sentiment(texts):
     greed = fear = 0
     for t in texts:
         try:
-            processed = preprocess(t)  # Now properly imported
+            processed = preprocess(t)  
             label = pipeline.predict([processed])[0]
             if label == "pos": greed += 1
             elif label == "neg": fear += 1
@@ -23,10 +23,11 @@ def analyze_sentiment(texts):
     total = greed + fear
     if total == 0: 
         print("⚠️ No valid sentiment data could be processed")
-        return 50  # Return neutral score if no data
+        return 50  #returning neutral if no score 
     return round((greed / total) * 100)
 
 def generate_final_decision(tech_score, sentiment_score):
+    #i made this 70% charts and 30% news but this can be tuned according to choice to counter fake news etc
     combined_score = (tech_score * 0.7) + (sentiment_score * 0.3)
     
     if combined_score > 70:
@@ -48,7 +49,7 @@ if __name__ == "__main__":
     query = "microsoft"
     ticker = "MSFT"
     
-    # Fetch and analyze technicals
+    #  fetching the charts data
     try:
         indicators = get_technical_indicators(ticker)
         tech_score = calculate_technical_score(indicators)
@@ -62,7 +63,7 @@ if __name__ == "__main__":
         print(f"⚠️ Technical analysis failed: {str(e)}")
         tech_score = 50  # Neutral if error
     
-    # Fetch and analyze sentiment
+    # Fetching the sentiment analysis 
     try:
         # tweets = fetch_twitter_data(query, 10)
         reddit = fetch_reddit_data(["stocks", "wallstreetbets"], query, 10)
@@ -73,7 +74,7 @@ if __name__ == "__main__":
         print(f"\n📊 Sentiment Analysis: {sentiment_score}/100")
         print(f"  Greed/Fear Ratio: {sentiment_score}:{100-sentiment_score}")
         
-        # Generate final decision
+        # final decision 
         decision, combined_score = generate_final_decision(tech_score, sentiment_score)
         print(f"\n💡 Final Decision (Score: {combined_score:.1f}/100): {decision}")
         
